@@ -1,0 +1,20 @@
+services:
+  flask-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: se-ai-api
+    restart: unless-stopped
+    ports:
+      - "2569:2569"
+    environment:
+      - FLASK_ENV=production
+    volumes:
+      - yolo_cache:/root/.cache
+    networks:
+      - se-ai-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2569/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
